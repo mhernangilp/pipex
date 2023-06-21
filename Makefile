@@ -1,6 +1,8 @@
 NAME = pipex
 
-SRCS = src/main.c
+SRCS = src/main.c \
+	   src/child_process.c \
+	   src/parent_process.c
 
 INCLUDE = ./pipex.h
 
