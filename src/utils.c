@@ -1,17 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parent_process.c                                   :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/21 16:04:48 by mhernang          #+#    #+#             */
-/*   Updated: 2023/06/21 16:05:09 by mhernang         ###   ########.fr       */
+/*   Created: 2023/07/05 21:20:26 by mhernang          #+#    #+#             */
+/*   Updated: 2023/07/05 21:20:43 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void	parent_process(void)
+int	ft_strncmp(char *s1, char *s2, unsigned int n)
 {
+	unsigned int i;
+
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && i < n)
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		++i;
+	}
+	if (i != n)
+		return (s1[i] - s2[i]);
+	return (0);
 }
