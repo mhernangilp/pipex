@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/07/05 21:30:10 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:08:38 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ int	main(int argc, char **argv, char **envp)
 	path = get_path(envp);
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
-		firstChild();
+		first_child(pipex);
 	pipex.pid2 = fork();
 	if (pipex.pid2 == 0)
-		secondChild();
-	return(0);
+		second_child(pipex);
+	close(pipex.pipe[0]);
+	close(pipex.pipe[1]);
+	waitpid(pipex.pid1, NULL, 0);
+	waitpid(pipex.pid2, NULL, 0);
+	return (0);
 }
