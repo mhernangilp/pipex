@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:39 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:00:50 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/09/17 17:17:17 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 typedef struct s_pipex
 {
@@ -38,5 +39,6 @@ char	**ft_split(char const *s, char c);
 
 //utils_2
 char	*ft_strjoin(char const *s1, char const *s2);
+void	error_msg(char *err);
 
 #endif

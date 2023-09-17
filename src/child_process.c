@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 16:03:52 by mhernang          #+#    #+#             */
-/*   Updated: 2023/07/12 11:08:40 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/09/17 17:14:38 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	first_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	arguments = ft_split(argv[2], ' ');
 	command = get_command(paths, arguments[0]);
 	if (!command)
-		exit(5);
+		error_msg("Error with command\n");
 	execve(command, arguments, envp);
 }
 
@@ -56,6 +56,6 @@ void	second_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	arguments = ft_split(argv[3], ' ');
 	command = get_command(paths, arguments[0]);
 	if (!command)
-		exit(6);
+		error_msg("Error with command\n");
 	execve(command, arguments, envp);
 }
