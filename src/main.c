@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/07/12 11:08:38 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/09/17 16:58:56 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	**get_paths(char **envp)
 {
-	int	i;
+	int		i;
 	char	*path;
 	char	**paths;
 
@@ -36,15 +36,15 @@ int	main(int argc, char **argv, char **envp)
 	char	**paths;
 
 	if (argc != 5)
-		return(1);
+		return (1);
 	pipex.in = open(argv[1], O_RDONLY);
 	if (pipex.in < 0)
-		return(2);
+		return (2);
 	pipex.out = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (pipex.out < 0)
-		return(3);
+		return (3);
 	if (pipe(pipex.pipe) < 0)
-		return(4);
+		return (4);
 	paths = get_paths(envp);
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
