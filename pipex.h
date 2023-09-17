@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <stdlib.h>
 
 typedef struct	s_pipex
 {
@@ -29,10 +30,14 @@ typedef struct	s_pipex
 }	t_pipex;
 
 //child_process
-void	first_child(pipex);
-void	second_child(pipex);
+void	first_child(t_pipex pipex, char **paths, char **argv, char **envp);
+void	second_child(t_pipex pipex, char **paths, char **argv, char **envp);
 
 //utils
 int	ft_strncmp(char *s1, char *s2, unsigned int n);
+char	**ft_split(char const *s, char c);
+
+//utils_2
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

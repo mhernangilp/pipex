@@ -12,14 +12,50 @@
 
 #include "../pipex.h"
 
-void	first_child(pipex)
+static char	*get_command(char **paths, char *file)
 {
-	dup2(pipex.pipe[1], 1);
-	close(pipex.pipe[0]);
+	char	*command;
+	char	*temp;
+
+	while (*paths)
+	{
+		temp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(temp, file);
+		free(temp);
+		if (access(command, F_OK | X_OK) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
 }
 
-void	second_child(pipex)
+void	first_child(t_pipex pipex, char **paths, char **argv, char **envp)
 {
-	dup2(pipex.pipe[0], 0);
+	char	*command;
+	char	**arguments;
+
+	dup2(pipex.pipe[1], 1);
+	dup2(pipex.in, 0);
 	close(pipex.pipe[0]);
+	arguments = ft_split(argv[2], ' ');
+	command = get_command(paths, arguments[0]);
+	if (!command)
+		exit(5);
+	execve(command, arguments, envp);
+}
+
+void	second_child(t_pipex pipex, char **paths, char **argv, char **envp)
+{
+	char	*command;
+	char	**arguments;
+
+	dup2(pipex.pipe[0], 0);
+	dup2(pipex.out, 1);
+	close(pipex.pipe[1]);
+	arguments = ft_split(argv[3], ' ');
+	command = get_command(paths, arguments[0]);
+	if (!command)
+		exit(6);
+	execve(command, arguments, envp);
 }
