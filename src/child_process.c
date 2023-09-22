@@ -38,10 +38,12 @@ void	first_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	dup2(pipex.pipe[1], 1);
 	dup2(pipex.in, 0);
 	close(pipex.pipe[0]);
+	close(pipex.in);
+	close(pipex.out);
 	arguments = ft_split(argv[2], ' ');
 	command = get_command(paths, arguments[0]);
 	if (!command)
-		error_msg("Error with command\n");
+		error_msg("Error with command");
 	execve(command, arguments, envp);
 }
 
@@ -53,9 +55,11 @@ void	second_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	dup2(pipex.pipe[0], 0);
 	dup2(pipex.out, 1);
 	close(pipex.pipe[1]);
+	close(pipex.in);
+	close(pipex.out);
 	arguments = ft_split(argv[3], ' ');
 	command = get_command(paths, arguments[0]);
 	if (!command)
-		error_msg("Error with command\n");
+		error_msg("Error with command");
 	execve(command, arguments, envp);
 }

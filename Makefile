@@ -19,9 +19,10 @@ OBJS = ${SRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${INCLUDE}
-	${CC} ${SRCS} -o ${NAME}
+	${CC} ${OBJS} -o ${NAME}
 
-clean: ${RM} ${OBJS}
+clean: 
+	${RM} ${OBJS}
 
 fclean: 
 	${RM} ${OBJS}
