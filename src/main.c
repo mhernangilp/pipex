@@ -55,22 +55,19 @@ static void	check_files(t_pipex *pipex, char **argv)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
-	char	**paths;
 
 	if (argc != 5)
 		error_msg("Invalid number of arguments");
 	check_files(&pipex, argv);
 	if (pipe(pipex.pipe) < 0)
 		error_msg("Pipe creation error");
-	paths = get_paths(envp);
-	if (!paths)
-		error_msg("Env error");
+	pipex.paths = get_paths(envp);
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
-		first_child(pipex, paths, argv, envp);
+		first_child(pipex, argv, envp);
 	pipex.pid2 = fork();
 	if (pipex.pid2 == 0)
-		second_child(pipex, paths, argv, envp);
+		second_child(pipex, argv, envp);
 	close_all(&pipex);
 	waitpid(pipex.pid1, NULL, 0);
 	waitpid(pipex.pid2, NULL, 0);

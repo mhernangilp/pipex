@@ -17,20 +17,25 @@ static char	*get_command(char **paths, char *file)
 	char	*command;
 	char	*temp;
 
-	while (*paths)
+	if (access(file, F_OK | X_OK) == 0)
+		return (file);
+	if (paths)
 	{
-		temp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(temp, file);
-		free(temp);
-		if (access(command, F_OK | X_OK) == 0)
-			return (command);
-		free(command);
-		paths++;
+		while (*paths)
+		{
+			temp = ft_strjoin(*paths, "/");
+			command = ft_strjoin(temp, file);
+			free(temp);
+			if (access(command, F_OK | X_OK) == 0)
+				return (command);
+			free(command);
+			paths++;
+		}
 	}
 	return (NULL);
 }
 
-void	first_child(t_pipex pipex, char **paths, char **argv, char **envp)
+void	first_child(t_pipex pipex, char **argv, char **envp)
 {
 	char	*command;
 	char	**arguments;
@@ -41,13 +46,14 @@ void	first_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	close(pipex.in);
 	close(pipex.out);
 	arguments = ft_split(argv[2], ' ');
-	command = get_command(paths, arguments[0]);
+	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
 		error_msg("Error with command");
-	execve(command, arguments, envp);
+	if (execve(command, arguments, envp) < 0)
+		exit(1);
 }
 
-void	second_child(t_pipex pipex, char **paths, char **argv, char **envp)
+void	second_child(t_pipex pipex, char **argv, char **envp)
 {
 	char	*command;
 	char	**arguments;
@@ -58,8 +64,9 @@ void	second_child(t_pipex pipex, char **paths, char **argv, char **envp)
 	close(pipex.in);
 	close(pipex.out);
 	arguments = ft_split(argv[3], ' ');
-	command = get_command(paths, arguments[0]);
+	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
 		error_msg("Error with command");
-	execve(command, arguments, envp);
+	if (execve(command, arguments, envp) < 0)
+		exit(1);
 }

@@ -30,8 +30,8 @@ typedef struct s_pipex
 }	t_pipex;
 
 //child_process
-void	first_child(t_pipex pipex, char **paths, char **argv, char **envp);
-void	second_child(t_pipex pipex, char **paths, char **argv, char **envp);
+void	first_child(t_pipex pipex, char **argv, char **envp);
+void	second_child(t_pipex pipex, char **argv, char **envp);
 
 //utils
 int		ft_strncmp(char *s1, char *s2, unsigned int n);
