@@ -57,9 +57,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	t[i] = '\0';
 	return (t);
 }
-
-void	error_msg(char *err)
-{
-	perror(err);
-	exit (1);
-}

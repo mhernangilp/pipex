@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
-#include <stdio.h>
 
 static char	**get_paths(char **envp)
 {
@@ -38,8 +37,6 @@ static void	close_all(t_pipex *pipex)
 {
 	close(pipex -> pipe[0]);
 	close(pipex -> pipe[1]);
-	close(pipex -> in);
-	close(pipex -> out);
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -8,7 +8,8 @@ SRCS = mandatory/main.c \
 BSRCS = bonus/main_bonus.c \
 	bonus/child_process_bonus.c \
 	bonus/utils_bonus.c \
-	bonus/utils_2_bonus.c
+	bonus/utils_2_bonus.c \
+	bonus/error_bonus.c
 
 INCLUDE = includes/pipex.h
 
