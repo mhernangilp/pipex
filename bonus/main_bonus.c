@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:13:04 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:06:31 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	initialize_pipex(t_pipex *pipex, int argc)
 	pipex -> pid = malloc((argc - 3) * sizeof(pid_t));
 }
 
-static void close_all(t_pipex *pipex)
+void close_all(t_pipex *pipex)
 {
 	int i;
 
@@ -69,7 +69,7 @@ static void wait_all(t_pipex *pipex)
 	int i;
 
 	i = -1;
-	while (++i < (pipex -> argc))
+	while (++i < (pipex -> argc) - 3)
 	{
 		printf("Espero pid %d\n", i);
 		waitpid(pipex -> pid[i], NULL, 0);

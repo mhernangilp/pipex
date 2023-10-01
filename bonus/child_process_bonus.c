@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 16:03:52 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:14:38 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:08:17 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	first_child(t_pipex pipex, char **argv, char **envp)
 		error_msg("Infile error");
 	dup2(pipex.in, 0);
 	dup2(pipex.pipe[0][1], 1);
-	close(pipex.pipe[0][0]);
+	close_all(&pipex);
 	arguments = ft_split(argv[2], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
@@ -62,9 +62,8 @@ void	middle_child(t_pipex pipex, char **argv, char **envp, int pipe)
 
 	printf("Child with in pipe %d and out pipe %d\n", pipe, pipe + 1);
 	dup2(pipex.pipe[pipe][0], 0);
-	close(pipex.pipe[pipe][1]);
 	dup2(pipex.pipe[pipe + 1][1], 1);
-	close(pipex.pipe[pipe + 1][0]);
+	close_all(&pipex);
 	arguments = ft_split(argv[pipe + 3], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
@@ -82,8 +81,8 @@ void	last_child(t_pipex pipex, char **argv, char **envp, int pipe)
 	if (pipex.out < 0)
 		error_msg("Outfile error");
 	dup2(pipex.pipe[pipe][0], 0);
-	close(pipex.pipe[pipe][1]);
 	dup2(pipex.out, 1);
+	close_all(&pipex);
 	arguments = ft_split(argv[pipex.argc - 2], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)

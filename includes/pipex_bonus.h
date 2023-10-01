@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:39 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:17:17 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:07:13 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ typedef struct s_pipex
 	int		argc;
 	char	**paths;
 }	t_pipex;
+
+//main
+void	close_all(t_pipex *pipex);
 
 //child_process
 void	first_child(t_pipex pipex, char **argv, char **envp);
