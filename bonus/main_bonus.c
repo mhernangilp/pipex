@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/10/01 16:36:47 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 18:58:00 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,9 @@ static void	initialize_pipex(t_pipex *pipex, int argc)
 	pipex -> pid = malloc((argc - 3) * sizeof(pid_t));
 }
 
-void close_all(t_pipex *pipex)
+static void	wait_all(t_pipex *pipex)
 {
-	int i;
-
-	i = -1;
-	while (++i < (pipex -> argc - 4))
-	{
-		close(pipex -> pipe[i][0]);
-		close(pipex -> pipe[i][1]);
-	}
-}
-
-static void wait_all(t_pipex *pipex)
-{
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < (pipex -> argc) - 3)
@@ -75,14 +63,30 @@ static void wait_all(t_pipex *pipex)
 	}
 }
 
+static void	check_here_doc(t_pipex *pipex, char **argv, int argc)
+{
+	if (!ft_strncmp("here_doc\0", argv[1], 9))
+	{
+		pipex -> here_doc = 1;
+		if (argc != 6)
+			exit_msg("Invalid number of arguments");
+		pipex -> argc = 5;
+	}
+	else
+	{
+		pipex -> here_doc = 0;
+		pipex -> argc = argc;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
-	int	i;
+	int		i;
 
 	if (argc < 5)
 		exit_msg("Invalid number of arguments");
-	pipex.argc = argc;
+	check_here_doc(&pipex, argv, argc);
 	initialize_pipex(&pipex, argc);
 	pipex.paths = get_paths(envp);
 	pipex.pid[0] = fork();

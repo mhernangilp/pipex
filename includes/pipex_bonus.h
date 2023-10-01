@@ -6,12 +6,12 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:39 by mhernang          #+#    #+#             */
-/*   Updated: 2023/10/01 16:07:13 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 19:03:32 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <unistd.h>
 # include <sys/wait.h>
@@ -27,10 +27,8 @@ typedef struct s_pipex
 	int		out;
 	int		argc;
 	char	**paths;
+	int		here_doc;
 }	t_pipex;
-
-//main
-void	close_all(t_pipex *pipex);
 
 //child_process
 void	first_child(t_pipex pipex, char **argv, char **envp);
@@ -43,6 +41,7 @@ char	**ft_split(char const *s, char c);
 
 //utils_2
 char	*ft_strjoin(char const *s1, char const *s2);
+void	close_all(t_pipex *pipex);
 
 //error
 void	error_msg(char *err);
