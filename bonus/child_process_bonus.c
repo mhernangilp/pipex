@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 16:03:52 by mhernang          #+#    #+#             */
-/*   Updated: 2023/10/01 16:08:17 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:36:48 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	middle_child(t_pipex pipex, char **argv, char **envp, int pipe)
 	char	*command;
 	char	**arguments;
 
-	printf("Child with in pipe %d and out pipe %d\n", pipe, pipe + 1);
 	dup2(pipex.pipe[pipe][0], 0);
 	dup2(pipex.pipe[pipe + 1][1], 1);
 	close_all(&pipex);

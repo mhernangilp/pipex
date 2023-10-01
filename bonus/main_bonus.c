@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/10/01 16:06:31 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/01 16:36:47 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static void wait_all(t_pipex *pipex)
 	i = -1;
 	while (++i < (pipex -> argc) - 3)
 	{
-		printf("Espero pid %d\n", i);
 		waitpid(pipex -> pid[i], NULL, 0);
 	}
 }
@@ -86,19 +85,16 @@ int	main(int argc, char **argv, char **envp)
 	pipex.argc = argc;
 	initialize_pipex(&pipex, argc);
 	pipex.paths = get_paths(envp);
-	printf("Fork .0\n");
 	pipex.pid[0] = fork();
 	if (pipex.pid[0] == 0)
 		first_child(pipex, argv, envp);
 	i = 0;
 	while (++i < argc - 4)
 	{
-		printf("Fork %d\n", i);
 		pipex.pid[i] = fork();
 		if (pipex.pid[i] == 0)
 			middle_child(pipex, argv, envp, i - 1);
 	}
-	printf("Fork .%d\n", argc - 4);
 	pipex.pid[argc - 4] = fork();
 	if (pipex.pid[argc - 4] == 0)
 		last_child(pipex, argv, envp, argc - 5);
