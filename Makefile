@@ -9,7 +9,8 @@ BSRCS = bonus/main_bonus.c \
 	bonus/child_process_bonus.c \
 	bonus/utils_bonus.c \
 	bonus/utils_2_bonus.c \
-	bonus/error_bonus.c
+	bonus/error_bonus.c \
+	bonu/heredoc_bonus.c
 
 INCLUDE = includes/pipex.h
 
@@ -29,18 +30,16 @@ BOBJS = ${BSRCS:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${INCLUDE}
-	${CC} ${OBJS} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 bonus: ${BOBJS} ${BINCLUDE}
-	${CC} ${BOBJS} -o ${NAME}
+	${CC} ${CFLAGS} ${BOBJS} -o ${NAME}
 
 clean: 
 	${RM} ${OBJS}
 	${RM} ${BOBJS}
 
-fclean: 
-	${RM} ${OBJS}
-	${RM} ${BOBJS}
+fclean:	clean
 	${RM} ${NAME}
 
 re: fclean all

@@ -33,15 +33,15 @@ static char	**get_paths(char **envp)
 	return (paths);
 }
 
-static void	initialize_pipex(t_pipex *pipex, int argc)
+static void	initialize_pipex(t_pipex *pipex)
 {
 	int	i;
 
-	pipex -> pipe = malloc((argc - 4) * sizeof(int *));
+	pipex -> pipe = malloc((pipex -> argc - 4) * sizeof(int *));
 	if (!(pipex -> pipe))
 		exit_msg("Error allocating memory\n");
 	i = -1;
-	while (++i < (argc - 4))
+	while (++i < (pipex -> argc - 4))
 	{
 		pipex -> pipe[i] = malloc(2 * sizeof(int));
 		if (!(pipex -> pipe[i]))
@@ -49,7 +49,7 @@ static void	initialize_pipex(t_pipex *pipex, int argc)
 		if (pipe(pipex -> pipe[i]) < 0)
 			exit_msg("Error creating pipes\n");
 	}
-	pipex -> pid = malloc((argc - 3) * sizeof(pid_t));
+	pipex -> pid = malloc((pipex -> argc - 3) * sizeof(pid_t));
 }
 
 static void	wait_all(t_pipex *pipex)
@@ -87,21 +87,21 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 5)
 		exit_msg("Invalid number of arguments");
 	check_here_doc(&pipex, argv, argc);
-	initialize_pipex(&pipex, argc);
+	initialize_pipex(&pipex);
 	pipex.paths = get_paths(envp);
 	pipex.pid[0] = fork();
 	if (pipex.pid[0] == 0)
 		first_child(pipex, argv, envp);
 	i = 0;
-	while (++i < argc - 4)
+	while (++i < pipex.argc - 4)
 	{
 		pipex.pid[i] = fork();
 		if (pipex.pid[i] == 0)
 			middle_child(pipex, argv, envp, i - 1);
 	}
-	pipex.pid[argc - 4] = fork();
-	if (pipex.pid[argc - 4] == 0)
-		last_child(pipex, argv, envp, argc - 5);
+	pipex.pid[pipex.argc - 4] = fork();
+	if (pipex.pid[pipex.argc - 4] == 0)
+		last_child(pipex, argv, envp, pipex.argc - 5);
 	close_all(&pipex);
 	wait_all(&pipex);
 	return (0);

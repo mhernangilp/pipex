@@ -41,13 +41,14 @@ void	first_child(t_pipex pipex, char **argv, char **envp)
 	char	*command;
 	char	**arguments;
 
-	pipex.in = open(argv[1], O_RDONLY);
-	if (pipex.in < 0)
-		error_msg("Infile error");
+	set_infile(&pipex, argv);
 	dup2(pipex.in, 0);
 	dup2(pipex.pipe[0][1], 1);
 	close_all(&pipex);
-	arguments = ft_split(argv[2], ' ');
+	if (pipex.here_doc == 0)
+		arguments = ft_split(argv[2], ' ');
+	else
+		arguments = ft_split(argv[3], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
 		error_msg("Error with command");
@@ -76,13 +77,20 @@ void	last_child(t_pipex pipex, char **argv, char **envp, int pipe)
 	char	*command;
 	char	**arguments;
 
-	pipex.out = open(argv[pipex.argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (pipex.here_doc == 0)
+		pipex.out = open(argv[pipex.argc - 1], O_CREAT | O_WRONLY
+		   | O_TRUNC, 0666);
+	else
+		pipex.out = open(argv[5], O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (pipex.out < 0)
 		error_msg("Outfile error");
 	dup2(pipex.pipe[pipe][0], 0);
 	dup2(pipex.out, 1);
 	close_all(&pipex);
-	arguments = ft_split(argv[pipex.argc - 2], ' ');
+	if (pipex.here_doc == 0)
+		arguments = ft_split(argv[pipex.argc - 2], ' ');
+	else
+		arguments = ft_split(argv[4], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
 		error_msg("Error with command");

@@ -47,4 +47,7 @@ void	close_all(t_pipex *pipex);
 void	error_msg(char *err);
 void	exit_msg(char *msg);
 
+//heredoc
+void	set_infile(t_pipex *pipex, char **argv);
+
 #endif
