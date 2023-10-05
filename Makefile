@@ -73,12 +73,14 @@ clean:
 	@make clean -sC $(LIBFT_PATH)
 	@rm -f $(OBJ)
 	@rm -f $(BOBJ)
+	@rm -f $(GNL_OBJ)
 	@echo "$(RED)Pipex objects deleted ✓$(NOC)"
 
 fclean:	
 	@make fclean -sC $(LIBFT_PATH)
 	@rm -f $(OBJ)
 	@rm -f $(BOBJ)
+	@rm -f $(GNL_OBJ)
 	@echo "$(RED)Pipex objects deleted ✓$(NOC)"
 	@rm -f $(LIBFT)
 	@rm -f $(NAME)
