@@ -33,12 +33,12 @@ typedef struct s_pipex
 void	first_child(t_pipex pipex, char **argv, char **envp);
 void	second_child(t_pipex pipex, char **argv, char **envp);
 
-//utils
+//libft
 int		ft_strncmp(char *s1, char *s2, unsigned int n);
 char	**ft_split(char const *s, char c);
-
-//utils_2
 char	*ft_strjoin(char const *s1, char const *s2);
+
+//error
 void	error_msg(char *err);
 
 #endif

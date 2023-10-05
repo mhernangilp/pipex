@@ -36,11 +36,6 @@ void	middle_child(t_pipex pipex, char **argv, char **envp, int pipe);
 void	last_child(t_pipex pipex, char **argv, char **envp, int pipe);
 
 //utils
-int		ft_strncmp(char *s1, char *s2, unsigned int n);
-char	**ft_split(char const *s, char c);
-
-//utils_2
-char	*ft_strjoin(char const *s1, char const *s2);
 void	close_all(t_pipex *pipex);
 
 //error
@@ -49,5 +44,14 @@ void	exit_msg(char *msg);
 
 //heredoc
 void	set_infile(t_pipex *pipex, char **argv);
+
+//libft
+int		ft_strncmp(char *s1, char *s2, unsigned int n);
+char	**ft_split(char const *s, char c);
+char	*ft_strjoin(char const *s1, char const *s2);
+int	ft_strlen(char *str);
+
+//gnl
+char	*get_next_line(int fd);
 
 #endif
