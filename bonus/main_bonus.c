@@ -104,5 +104,7 @@ int	main(int argc, char **argv, char **envp)
 		last_child(pipex, argv, envp, pipex.argc - 5);
 	close_all(&pipex);
 	wait_all(&pipex);
+	if (pipex.here_doc == 1)
+		unlink(".heredoc");
 	return (0);
 }
