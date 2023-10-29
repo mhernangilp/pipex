@@ -1,19 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils_2.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 16:59:44 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:10:49 by mhernang         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
 void	error_msg(char *err)
 {
 	perror(err);
 	exit (1);
+}
+
+void	exit_msg(char *msg)
+{
+	printf("%s\n", msg);
+	exit(1);
 }

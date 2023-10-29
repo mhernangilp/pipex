@@ -6,11 +6,12 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 16:03:52 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:14:38 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:09:57 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
+#include <unistd.h>
 
 static char	*get_command(char **paths, char *file)
 {
@@ -43,11 +44,9 @@ void	first_child(t_pipex pipex, char **argv, char **envp)
 	pipex.in = open(argv[1], O_RDONLY);
 	if (pipex.in < 0)
 		error_msg("Infile error");
-	dup2(pipex.pipe[1], 1);
 	dup2(pipex.in, 0);
-	close(pipex.pipe[0]);
-	close(pipex.in);
-	close(pipex.out);
+	dup2(pipex.pipe[0][1], 1);
+	close_all(&pipex);
 	arguments = ft_split(argv[2], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
@@ -56,20 +55,18 @@ void	first_child(t_pipex pipex, char **argv, char **envp)
 		exit(1);
 }
 
-void	second_child(t_pipex pipex, char **argv, char **envp)
+void	last_child(t_pipex pipex, char **argv, char **envp, int pipe)
 {
 	char	*command;
 	char	**arguments;
 
-	pipex.out = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	pipex.out = open(argv[pipex.argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (pipex.out < 0)
 		error_msg("Outfile error");
-	dup2(pipex.pipe[0], 0);
+	dup2(pipex.pipe[pipe][0], 0);
 	dup2(pipex.out, 1);
-	close(pipex.pipe[1]);
-	close(pipex.in);
-	close(pipex.out);
-	arguments = ft_split(argv[3], ' ');
+	close_all(&pipex);
+	arguments = ft_split(argv[pipex.argc - 2], ' ');
 	command = get_command(pipex.paths, arguments[0]);
 	if (!command)
 		error_msg("Error with command");

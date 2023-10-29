@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:39 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:17:17 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:18:08 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 typedef struct s_pipex
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		pipe[2];
+	pid_t	*pid;
+	int		**pipe;
 	int		in;
 	int		out;
+	int		argc;
 	char	**paths;
 }	t_pipex;
 

@@ -6,11 +6,11 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:31 by mhernang          #+#    #+#             */
-/*   Updated: 2023/09/17 17:13:04 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:22:52 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/pipex_bonus.h"
 
 static char	**get_paths(char **envp)
 {
@@ -33,10 +33,46 @@ static char	**get_paths(char **envp)
 	return (paths);
 }
 
-static void	close_all(t_pipex *pipex)
+static void	initialize_pipex(t_pipex *pipex, int argc)
 {
-	close(pipex -> pipe[0]);
-	close(pipex -> pipe[1]);
+	int	i;
+
+	pipex -> pipe = malloc((argc - 4) * sizeof(int *));
+	if (!(pipex -> pipe))
+		exit_msg("Error allocating memory\n");
+	i = -1;
+	while (++i < (argc - 4))
+	{
+		pipex -> pipe[i] = malloc(2 * sizeof(int));
+		if (!(pipex -> pipe[i]))
+			exit_msg("Error allocating memory\n");
+		if (pipe(pipex -> pipe[i]) < 0)
+			exit_msg("Error creating pipes\n");
+	}
+	pipex -> pid = malloc((argc - 3) * sizeof(pid_t));
+}
+
+void close_all(t_pipex *pipex)
+{
+	int i;
+
+	i = -1;
+	while (++i < (pipex -> argc - 4))
+	{
+		close(pipex -> pipe[i][0]);
+		close(pipex -> pipe[i][1]);
+	}
+}
+
+static void wait_all(t_pipex *pipex)
+{
+	int i;
+
+	i = -1;
+	while (++i < (pipex -> argc) - 3)
+	{
+		waitpid(pipex -> pid[i], NULL, 0);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -44,18 +80,17 @@ int	main(int argc, char **argv, char **envp)
 	t_pipex	pipex;
 
 	if (argc != 5)
-		error_msg("Invalid number of arguments");
-	if (pipe(pipex.pipe) < 0)
-		error_msg("Pipe creation error");
+		exit_msg("Invalid number of arguments");
+	pipex.argc = argc;
+	initialize_pipex(&pipex, argc);
 	pipex.paths = get_paths(envp);
-	pipex.pid1 = fork();
-	if (pipex.pid1 == 0)
+	pipex.pid[0] = fork();
+	if (pipex.pid[0] == 0)
 		first_child(pipex, argv, envp);
-	pipex.pid2 = fork();
-	if (pipex.pid2 == 0)
-		second_child(pipex, argv, envp);
+	pipex.pid[argc - 4] = fork();
+	if (pipex.pid[argc - 4] == 0)
+		last_child(pipex, argv, envp, argc - 5);
 	close_all(&pipex);
-	waitpid(pipex.pid1, NULL, 0);
-	waitpid(pipex.pid2, NULL, 0);
+	wait_all(&pipex);
 	return (0);
 }
