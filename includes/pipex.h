@@ -6,7 +6,7 @@
 /*   By: mhernang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:47:39 by mhernang          #+#    #+#             */
-/*   Updated: 2023/10/29 19:18:08 by mhernang         ###   ########.fr       */
+/*   Updated: 2023/10/29 19:34:45 by mhernang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 
 //error
 void	error_msg(char *err);
+void	exit_msg(char *msg);
 
 #endif
