@@ -92,5 +92,5 @@ int	main(int argc, char **argv, char **envp)
 		last_child(pipex, argv, envp, argc - 5);
 	close_all(&pipex);
 	wait_all(&pipex);
-	return (0);
+	exit (0);
 }

@@ -106,5 +106,5 @@ int	main(int argc, char **argv, char **envp)
 	wait_all(&pipex);
 	if (pipex.here_doc == 1)
 		unlink(".heredoc");
-	return (0);
+	exit (0);
 }
