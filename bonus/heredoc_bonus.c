@@ -27,12 +27,13 @@ static void	load_heredoc(t_pipex *pipex, char *arg)
 		}
 		close(fd[1]);
 		free(buf);
+		exit(0);
 	}
 	else 
 	{
 		close(fd[1]);
 		pipex -> in = fd[0];
-		wait(NULL);
+		waitpid(pid, NULL, 0);
 	}
 }
 
